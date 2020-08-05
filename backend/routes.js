@@ -7,12 +7,14 @@ const Hexagon = require('./models/hexagon.model')
 router.get('/cluster/:id', (req, res, next) => {
   if (req.params.id) {
     Cluster.findOne({ _id: req.params.id })
+      .populate('hexagons')
       .then(data => {
-        res.json({ success: true, data })
+        return res.json({ success: true, data })
       })
       .catch(next)
+  } else {
+    res.status(400)
   }
-  res.status(400)
 })
 
 router.post('/cluster', (req, res, next) => {
@@ -56,19 +58,31 @@ router.post('/cluster', (req, res, next) => {
     .catch(next)
 })
 
-router.put('/cluster', (req, res, next) => {
+router.post('/hex', (req, res, next) => {
   if (req.body) {
-    Cluster.findOneAndUpdate(
-      { _id: req.id },
-      { $set: { hexagons: req.hexagons } },
-      { new: true, useFindAndModify: false }
-    )
-      .then(data => {
-        res.json(data)
+    Hexagon.create({
+      ...req.body,
+      _id: mongoose.Types.ObjectId(),
+      cluster: mongoose.Types.ObjectId(req.body.cluster)
+    })
+      .then(hex => {
+        Cluster.findOneAndUpdate(
+          { _id: hex.cluster },
+          { $push: { hexagons: mongoose.Types.ObjectId(hex._id) } },
+          { new: true, useFindAndModify: false }
+        )
+          .populate('hexagons')
+          .exec((err, data) => {
+            if (err) {
+              console.error(err)
+            }
+            res.json({ success: true, data })
+          })
       })
       .catch(next)
+  } else {
+    res.status(400)
   }
-  res.status(400)
 })
 
 module.exports = router

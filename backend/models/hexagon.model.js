@@ -18,12 +18,6 @@ const HexagonModel = Schema({
   row: {
     type: Number
   },
-  neighbours: [
-    {
-      side: Number,
-      hexagon: Schema.Types.ObjectId
-    }
-  ],
   cluster: {
     type: Schema.Types.ObjectId,
     ref: 'Cluster'

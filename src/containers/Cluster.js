@@ -59,7 +59,7 @@ const ClusterGrid = ({ cluster, selectedHex, setHex }) => {
           css={css`
             display: grid;
             column-gap: -13px;
-            grid-template-columns: repeat(${cluster.length}, 60px);
+            grid-template-columns: repeat(${cluster.hexagons.length}, 60px);
           `}
         >
           {cluster.hexagons.map((hex, index) => (

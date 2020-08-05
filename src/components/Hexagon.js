@@ -11,7 +11,7 @@ const Hexagon = ({ hex, onClick }) => {
       onClick={onClick}
       css={css`
         grid-column: ${hex.column};
-        grid-row: ${hex.column};
+        grid-row: ${hex.row};
         margin-bottom: 2px;
         ${isEven &&
           `

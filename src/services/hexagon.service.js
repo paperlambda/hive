@@ -1,13 +1,14 @@
+import http from '@/utils/http'
+import { map } from 'rxjs/operators'
+
 const HexagonService = {
-  hex: (x, y) => {
+  hex: ({ x, y }) => {
     return {
       label: `${x},${y}`,
       x,
       y,
-      coord: {
-        col: x + 1,
-        row: y + 1
-      }
+      column: x + 1,
+      row: y + 1
     }
   },
   create: (hex, side) => {
@@ -25,10 +26,17 @@ const HexagonService = {
 
     if (x < 0 || y < 0) {
       //FIXME: find solution for x < 0 or y < 0
-      throw new Error('Cannot add hex to negative x or y axis')
+      alert('Cannot add hex to negative x or y axis')
     }
 
-    return HexagonService.hex(x, y)
+    return HexagonService.hex({ x, y })
+  },
+  save: data => {
+    return http({
+      url: '/hex',
+      method: 'POST',
+      data
+    }).pipe(map(res => res))
   }
 }
 

@@ -3,7 +3,12 @@ import { css } from '@emotion/core'
 import { Hexes } from '@/constant'
 import { connect } from 'react-redux'
 import ClusterService from '@/services/cluster.service'
-import { createCluster, setCluster } from '@/store/actions'
+import {
+  createCluster,
+  createHex,
+  getCluster,
+  setCluster
+} from '@/store/actions'
 import PropTypes from 'prop-types'
 import HexagonService from '@/services/hexagon.service'
 
@@ -11,26 +16,35 @@ const HexForm = ({ cluster, ...props }) => {
   const [selectedHex, setHex] = React.useState('')
   const [selectedSide, setSide] = React.useState('')
 
+  React.useEffect(() => {
+    const clusterLocal = localStorage.getItem('hive-cluster-id')
+    if (clusterLocal) {
+      props.getCluster(clusterLocal)
+    }
+  }, [])
+
   const createCluster = () => {
     props.createCluster()
   }
 
   const generateFromTemplate = () => {
-    const newHexes = Hexes.map(({ x, y }) => HexagonService.hex(x, y))
+    const newHexes = Hexes.map(({ x, y }) => HexagonService.hex({ x, y }))
     props.setCluster(newHexes)
   }
 
-  const createHex = e => {
+  const willCreateHex = e => {
     e.preventDefault()
-    const getAnchorHex = cluster.find(({ label }) => label === selectedHex)
+    const clusterLocal = localStorage.getItem('hive-cluster-id')
+    const getAnchorHex = cluster.hexagons.find(
+      ({ label }) => label === selectedHex
+    )
     const newHex = HexagonService.create(getAnchorHex, selectedSide)
 
-    if (ClusterService.findHex(cluster, newHex)) {
+    if (ClusterService.findHex(cluster.hexagons, newHex)) {
       alert('Attempting to create hex in occupied coordinate')
       return
     }
-
-    props.setCluster([...cluster, newHex])
+    props.createHex({ ...newHex, cluster: clusterLocal })
   }
 
   if (cluster === null) {
@@ -54,7 +68,7 @@ const HexForm = ({ cluster, ...props }) => {
 
   return (
     cluster && (
-      <form className="p-2" onSubmit={createHex}>
+      <form className="p-2" onSubmit={willCreateHex}>
         <div className="flex">
           <div className="mr-3">
             <label className="text-sm">Hex</label>
@@ -131,7 +145,9 @@ const HexForm = ({ cluster, ...props }) => {
 HexForm.propTypes = {
   cluster: PropTypes.object,
   setCluster: PropTypes.func,
-  createCluster: PropTypes.func
+  createCluster: PropTypes.func,
+  getCluster: PropTypes.func,
+  createHex: PropTypes.func
 }
 
 const mapStateToProps = state => ({
@@ -142,6 +158,8 @@ export default connect(
   mapStateToProps,
   {
     setCluster: setCluster.init,
-    createCluster: createCluster.init
+    createCluster: createCluster.init,
+    getCluster: getCluster.init,
+    createHex: createHex.init
   }
 )(HexForm)

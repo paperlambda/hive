@@ -1,4 +1,9 @@
-import { createCluster, setCluster } from '@/store/actions'
+import {
+  createCluster,
+  createHex,
+  getCluster,
+  setCluster
+} from '@/store/actions'
 import update from 'immutability-helper'
 
 const initialState = {
@@ -28,6 +33,44 @@ const clusterReducer = (state = initialState, action) => {
       })
     }
     case createCluster.error: {
+      return update(state, {
+        loading: { $set: false },
+        error: { $set: action.payload }
+      })
+    }
+    case getCluster.start: {
+      return update(state, {
+        loading: { $set: true },
+        error: { $set: null }
+      })
+    }
+    case getCluster.success: {
+      return update(state, {
+        cluster: { $set: action.payload },
+        loading: { $set: false },
+        error: { $set: null }
+      })
+    }
+    case getCluster.error: {
+      return update(state, {
+        loading: { $set: false },
+        error: { $set: action.payload }
+      })
+    }
+    case createHex.start: {
+      return update(state, {
+        loading: { $set: true },
+        error: { $set: null }
+      })
+    }
+    case createHex.success: {
+      return update(state, {
+        cluster: { $set: action.payload },
+        loading: { $set: false },
+        error: { $set: null }
+      })
+    }
+    case createHex.error: {
       return update(state, {
         loading: { $set: false },
         error: { $set: action.payload }
