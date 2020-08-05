@@ -1,7 +1,7 @@
 import { defer, throwError, from } from 'rxjs'
 import axios from 'axios'
 import { catchError, map } from 'rxjs/operators'
-import { baseApiUrl } from '@/config'
+import { baseApiUrl } from '../../server'
 
 export default props => {
   return defer(() => {

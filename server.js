@@ -1,3 +1,5 @@
+import {baseApiUrl} from "@/config";
+
 const express = require('express')
 const path = require('path')
 const graceful = require('node-graceful')
@@ -14,6 +16,7 @@ app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, 'dist')))
 
 const mongodb_url = process.env.MONGODB_URL || 'mongodb://127.0.0.1:27017/hive'
+export const baseApiUrl = process.env.API_HOST || 'http://localhost:4800'
 
 mongoose.connect(mongodb_url, {
   useNewUrlParser: true
