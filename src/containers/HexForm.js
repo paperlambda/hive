@@ -56,12 +56,12 @@ const HexForm = ({ cluster, ...props }) => {
         >
           Create New Cluster
         </button>
-        <button
-          className="bg-gray-200 hover:bg-gray-300 py-2 px-4 rounded text-sm"
-          onClick={() => generateFromTemplate()}
-        >
-          Generate From Template
-        </button>
+        {/*<button*/}
+        {/*  className="bg-gray-200 hover:bg-gray-300 py-2 px-4 rounded text-sm"*/}
+        {/*  onClick={() => generateFromTemplate()}*/}
+        {/*>*/}
+        {/*  Generate From Template*/}
+        {/*</button>*/}
       </div>
     )
   }
