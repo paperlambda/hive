@@ -1,11 +1,12 @@
 import React from 'react'
-import Hexagon from "@/components/Hexagon.component";
-import Cluster from "@/components/Cluster.component";
+import ClusterGrid from '@/containers/Cluster'
+import HexForm from '@/containers/HexForm'
 
 const App = () => {
   return (
     <div>
-      <Cluster/>
+      <HexForm />
+      <ClusterGrid />
     </div>
   )
 }
