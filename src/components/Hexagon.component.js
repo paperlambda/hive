@@ -1,12 +1,12 @@
 import React from 'react'
 import {css} from "@emotion/core";
 
-const Hexagon = ({ hex }) => {
+const Hexagon = ({ hex, onClick }) => {
   const label = `${hex.x},${hex.y}`
   const isEven = hex.coord.col % 2 === 0
   const isFirstCol = hex.coord.col === 1
   return (
-    <div css={css`
+    <div onClick={onClick} css={css`
       grid-column:${hex.coord.col};
       grid-row:${hex.coord.row};
       margin-bottom:2px;
