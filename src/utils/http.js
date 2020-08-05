@@ -5,7 +5,7 @@ import { catchError, map } from 'rxjs/operators'
 export default props => {
   return defer(() => {
     const { url, params, data, method } = props
-    const baseUrl = `https://hive-mind-000.herokuapp.com/api`
+    const baseUrl = `http://localhost:4800/api`
     const httpConfig = {
       baseURL: baseUrl,
       params,
