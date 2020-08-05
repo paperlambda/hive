@@ -1,12 +1,11 @@
 import { defer, throwError, from } from 'rxjs'
 import axios from 'axios'
 import { catchError, map } from 'rxjs/operators'
-import config from '../../config'
 
 export default props => {
   return defer(() => {
     const { url, params, data, method } = props
-    const baseUrl = `${config.baseApiUrl}/api`
+    const baseUrl = `https://hive-mind-000.herokuapp.com/api`
     const httpConfig = {
       baseURL: baseUrl,
       params,
