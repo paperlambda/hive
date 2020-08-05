@@ -1,5 +1,4 @@
-import { mongoDBUrl } from './config'
-
+const config = require('./config')
 const express = require('express')
 const path = require('path')
 const graceful = require('node-graceful')
@@ -15,7 +14,7 @@ app.use(cors())
 app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, 'dist')))
 
-mongoose.connect(mongoDBUrl, {
+mongoose.connect(config.mongoDBUrl, {
   useNewUrlParser: true
 })
 
