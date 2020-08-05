@@ -3,9 +3,22 @@ import Hexagon from '@/components/Hexagon'
 import { css } from '@emotion/core'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import { setHex } from '@/store/actions'
 
-const ClusterGrid = ({ cluster }) => {
-  const getNeighbours = hex => {
+const ClusterGrid = ({ cluster, selectedHex, setHex }) => {
+  const [displayHex, setDisplayHex] = React.useState(selectedHex)
+
+  React.useEffect(() => {
+    if (selectedHex) {
+      const neighbours = getNeighbours(selectedHex)
+      setDisplayHex({
+        hex: selectedHex,
+        neighbours: JSON.stringify(neighbours)
+      })
+    }
+  }, [selectedHex])
+
+  const getNeighbours = React.useCallback(hex => {
     const isEvenCol = hex.coord.col % 2 === 0
     const neighbourMap = {
       0: [hex.x, hex.y - 1],
@@ -23,45 +36,59 @@ const ClusterGrid = ({ cluster }) => {
         return normalizedHexes.includes(value.join('.'))
       })
       .map(n => {
-        return {
-          side: n[0],
-          hex: n[1].join(',')
-        }
+        return [n[0], n[1].join(',')]
       })
 
-    console.log(neighbours)
+    return neighbours
+  })
+
+  const didSelectHex = hex => {
+    setHex(hex)
   }
 
   return (
     cluster && (
-      <div
-        css={css`
-          display: grid;
-          column-gap: -13px;
-          grid-template-columns: repeat(${cluster.length}, 60px);
-        `}
-      >
-        {cluster.map((hex, index) => (
-          <Hexagon
-            key={`hex-${index}`}
-            onClick={() => getNeighbours(hex)}
-            hex={hex}
-          />
-        ))}
+      <div className="p-2">
+        {displayHex && (
+          <div className="px-2 py-3 mb-2 bg-gray-200">
+            <p>Selected: {displayHex.hex.label}</p>
+            <p>Neighbours: {displayHex.neighbours}</p>
+          </div>
+        )}
+        <div
+          css={css`
+            display: grid;
+            column-gap: -13px;
+            grid-template-columns: repeat(${cluster.length}, 60px);
+          `}
+        >
+          {cluster.map((hex, index) => (
+            <Hexagon
+              key={`hex-${index}`}
+              onClick={() => didSelectHex(hex)}
+              hex={hex}
+            />
+          ))}
+        </div>
       </div>
     )
   )
 }
 
 ClusterGrid.propTypes = {
-  cluster: PropTypes.array
+  cluster: PropTypes.array,
+  selectedHex: PropTypes.object,
+  setHex: PropTypes.func
 }
 
 const mapStateToProps = state => ({
-  cluster: state.cluster.cluster
+  cluster: state.cluster.cluster,
+  selectedHex: state.hex.hex
 })
 
 export default connect(
   mapStateToProps,
-  null
+  {
+    setHex: setHex.init
+  }
 )(ClusterGrid)

@@ -25,3 +25,4 @@ const createSyncAction = type => {
 }
 
 export const setCluster = createSyncAction('CLUSTER_SET')
+export const setHex = createSyncAction('HEX_SET')
