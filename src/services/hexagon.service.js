@@ -25,7 +25,7 @@ const HexagonService = {
 
     if (x < 0 || y < 0) {
       //FIXME: find solution for x < 0 or y < 0
-      throw new Error('Cannot add hex to that coordinate')
+      throw new Error('Cannot add hex to negative x or y axis')
     }
 
     return HexagonService.hex(x, y)
