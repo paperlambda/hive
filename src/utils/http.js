@@ -1,12 +1,12 @@
 import { defer, throwError, from } from 'rxjs'
 import axios from 'axios'
 import { catchError, map } from 'rxjs/operators'
+import { baseApiUrl } from '@/config'
 
 export default props => {
   return defer(() => {
     const { url, params, data, method } = props
-    const host = process.env.API_HOST || 'http://localhost:4800'
-    const baseUrl = `${host}/api`
+    const baseUrl = `${baseApiUrl}/api`
     const httpConfig = {
       baseURL: baseUrl,
       params,
