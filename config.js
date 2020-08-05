@@ -3,4 +3,4 @@ const config = {
   mongoDBUrl: process.env.MONGODB_URL || 'mongodb://127.0.0.1:27017/hive'
 }
 
-export default config
+module.exports = config
