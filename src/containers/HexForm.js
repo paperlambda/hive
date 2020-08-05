@@ -28,6 +28,12 @@ const HexForm = ({ cluster, setCluster }) => {
     e.preventDefault()
     const getAnchorHex = cluster.find(({ label }) => label === selectedHex)
     const newHex = HexagonService.create(getAnchorHex, selectedSide)
+
+    if (ClusterInstance.findHex(cluster, newHex)) {
+      alert('Attempting to create hex in occupied coordinate')
+      return
+    }
+
     setCluster([...cluster, newHex])
   }
 

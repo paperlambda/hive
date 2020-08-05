@@ -16,4 +16,9 @@ export default class Cluster {
     }
     return this.cluster
   }
+
+  findHex(cluster, hex) {
+    const { label: selectedLabel } = hex
+    return cluster.find(({ label }) => label === selectedLabel) || false
+  }
 }

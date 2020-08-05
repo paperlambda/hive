@@ -21,7 +21,14 @@ const HexagonService = {
       4: isEvenCol ? [hex.x - 1, hex.y + 1] : [hex.x - 1, hex.y],
       5: isEvenCol ? [hex.x - 1, hex.y] : [hex.x - 1, hex.y - 1]
     }
-    return HexagonService.hex(neighbourMap[side][0], neighbourMap[side][1])
+    const [x, y] = neighbourMap[side]
+
+    if (x < 0 || y < 0) {
+      //FIXME: find solution for x < 0 or y < 0
+      throw new Error('Cannot add hex to that coordinate')
+    }
+
+    return HexagonService.hex(x, y)
   }
 }
 
