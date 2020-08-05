@@ -32,6 +32,11 @@ const HexForm = ({ cluster, ...props }) => {
     props.setCluster(newHexes)
   }
 
+  const willReset = () => {
+    localStorage.removeItem('hive-cluster-id')
+    createCluster()
+  }
+
   const willCreateHex = e => {
     e.preventDefault()
     const clusterLocal = localStorage.getItem('hive-cluster-id')
@@ -135,6 +140,13 @@ const HexForm = ({ cluster, ...props }) => {
         <div className="mt-2">
           <button className="bg-blue-200 hover:bg-blue-300 py-2 px-4 rounded text-sm">
             Attach
+          </button>
+          <button
+            onClick={() => willReset()}
+            type="button"
+            className="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded text-sm ml-3"
+          >
+            Reset Cluster
           </button>
         </div>
       </form>
