@@ -12,7 +12,7 @@ const HexagonService = {
   },
   create: (hex, side) => {
     //TODO: check if has neighbour
-    const isEvenCol = hex.coord.col % 2 === 0
+    const isEvenCol = hex.column % 2 === 0
     const neighbourMap = {
       0: [hex.x, hex.y - 1],
       1: isEvenCol ? [hex.x + 1, hex.y] : [hex.x + 1, hex.y - 1],

@@ -4,14 +4,14 @@ import PropTypes from 'prop-types'
 
 const Hexagon = ({ hex, onClick }) => {
   const label = `${hex.x},${hex.y}`
-  const isEven = hex.coord.col % 2 === 0
-  const isFirstCol = hex.coord.col === 1
+  const isEven = hex.column % 2 === 0
+  const isFirstCol = hex.column === 1
   return (
     <div
       onClick={onClick}
       css={css`
-        grid-column: ${hex.coord.col};
-        grid-row: ${hex.coord.row};
+        grid-column: ${hex.column};
+        grid-row: ${hex.column};
         margin-bottom: 2px;
         ${isEven &&
           `
@@ -22,7 +22,7 @@ const Hexagon = ({ hex, onClick }) => {
         ${!isFirstCol &&
           `
           position: relative;
-          left: ${(hex.coord.col - 1) * -13}px;
+          left: ${(hex.column - 1) * -13}px;
         `}
       `}
     >
@@ -63,10 +63,8 @@ Hexagon.propTypes = {
   hex: PropTypes.shape({
     x: PropTypes.number.isRequired,
     y: PropTypes.number.isRequired,
-    coord: PropTypes.shape({
-      col: PropTypes.number.isRequired,
-      row: PropTypes.number.isRequired
-    })
+    column: PropTypes.number.isRequired,
+    row: PropTypes.number.isRequired
   }),
   onClick: PropTypes.func
 }

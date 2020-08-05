@@ -19,7 +19,7 @@ const ClusterGrid = ({ cluster, selectedHex, setHex }) => {
   }, [selectedHex])
 
   const getNeighbours = React.useCallback(hex => {
-    const isEvenCol = hex.coord.col % 2 === 0
+    const isEvenCol = hex.column % 2 === 0
     const neighbourMap = {
       0: [hex.x, hex.y - 1],
       1: isEvenCol ? [hex.x + 1, hex.y] : [hex.x + 1, hex.y - 1],
@@ -29,7 +29,7 @@ const ClusterGrid = ({ cluster, selectedHex, setHex }) => {
       5: isEvenCol ? [hex.x - 1, hex.y] : [hex.x - 1, hex.y - 1]
     }
 
-    const normalizedHexes = cluster.map(({ x, y }) => [x, y].join('.'))
+    const normalizedHexes = cluster.hexagons.map(({ x, y }) => [x, y].join('.'))
 
     const neighbours = Object.entries(neighbourMap)
       .filter(([_, value]) => {
@@ -62,7 +62,7 @@ const ClusterGrid = ({ cluster, selectedHex, setHex }) => {
             grid-template-columns: repeat(${cluster.length}, 60px);
           `}
         >
-          {cluster.map((hex, index) => (
+          {cluster.hexagons.map((hex, index) => (
             <Hexagon
               key={`hex-${index}`}
               onClick={() => didSelectHex(hex)}
@@ -76,7 +76,7 @@ const ClusterGrid = ({ cluster, selectedHex, setHex }) => {
 }
 
 ClusterGrid.propTypes = {
-  cluster: PropTypes.array,
+  cluster: PropTypes.object,
   selectedHex: PropTypes.object,
   setHex: PropTypes.func
 }

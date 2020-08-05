@@ -1,24 +1,18 @@
-import HexagonService from '@/services/hexagon.service'
+import http from '@/utils/http'
+import { map } from 'rxjs/operators'
 
-export default class Cluster {
-  constructor() {
-    this.cluster = null
-  }
+const ClusterService = {
+  create: () => {
+    return http({
+      url: '/cluster',
+      method: 'POST'
+    }).pipe(map(res => res))
+  },
 
-  create() {
-    const newHex = HexagonService.hex(0, 0)
-    this.cluster = [newHex]
-  }
-
-  getCluster() {
-    if (this.cluster === null) {
-      this.create()
-    }
-    return this.cluster
-  }
-
-  findHex(cluster, hex) {
+  findHex: (cluster, hex) => {
     const { label: selectedLabel } = hex
     return cluster.find(({ label }) => label === selectedLabel) || false
   }
 }
+
+export default ClusterService

@@ -2,26 +2,22 @@ import React from 'react'
 import { css } from '@emotion/core'
 import { Hexes } from '@/constant'
 import { connect } from 'react-redux'
-import Cluster from '@/services/cluster.service'
-import { setCluster } from '@/store/actions'
+import ClusterService from '@/services/cluster.service'
+import { createCluster, setCluster } from '@/store/actions'
 import PropTypes from 'prop-types'
 import HexagonService from '@/services/hexagon.service'
 
-const HexForm = ({ cluster, setCluster }) => {
-  const ClusterInstance = React.useMemo(() => new Cluster())
+const HexForm = ({ cluster, ...props }) => {
   const [selectedHex, setHex] = React.useState('')
   const [selectedSide, setSide] = React.useState('')
 
   const createCluster = () => {
-    const newCluster = ClusterInstance.getCluster()
-    if (newCluster) {
-      setCluster(newCluster)
-    }
+    props.createCluster()
   }
 
   const generateFromTemplate = () => {
     const newHexes = Hexes.map(({ x, y }) => HexagonService.hex(x, y))
-    setCluster(newHexes)
+    props.setCluster(newHexes)
   }
 
   const createHex = e => {
@@ -29,12 +25,12 @@ const HexForm = ({ cluster, setCluster }) => {
     const getAnchorHex = cluster.find(({ label }) => label === selectedHex)
     const newHex = HexagonService.create(getAnchorHex, selectedSide)
 
-    if (ClusterInstance.findHex(cluster, newHex)) {
+    if (ClusterService.findHex(cluster, newHex)) {
       alert('Attempting to create hex in occupied coordinate')
       return
     }
 
-    setCluster([...cluster, newHex])
+    props.setCluster([...cluster, newHex])
   }
 
   if (cluster === null) {
@@ -74,7 +70,7 @@ const HexForm = ({ cluster, setCluster }) => {
                 onChange={e => setHex(e.target.value)}
               >
                 <option value="">Select Hex</option>
-                {cluster.map(({ x, y }, index) => (
+                {cluster.hexagons.map(({ x, y }, index) => (
                   <option key={`opt-hex-${index}`} value={`${x},${y}`}>
                     {[x, y].join(',')}
                   </option>
@@ -133,8 +129,9 @@ const HexForm = ({ cluster, setCluster }) => {
 }
 
 HexForm.propTypes = {
-  cluster: PropTypes.array,
-  setCluster: PropTypes.func
+  cluster: PropTypes.object,
+  setCluster: PropTypes.func,
+  createCluster: PropTypes.func
 }
 
 const mapStateToProps = state => ({
@@ -144,6 +141,7 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   {
-    setCluster: setCluster.init
+    setCluster: setCluster.init,
+    createCluster: createCluster.init
   }
 )(HexForm)
