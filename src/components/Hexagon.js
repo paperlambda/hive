@@ -10,6 +10,7 @@ const Hexagon = ({ hex, onClick }) => {
     <div
       onClick={onClick}
       css={css`
+        cursor: pointer;
         grid-column: ${hex.column};
         grid-row: ${hex.row};
         margin-bottom: 2px;
