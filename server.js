@@ -13,7 +13,7 @@ app.use(cors())
 app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, 'dist')))
 
-const mongodb_url = process.env.mongodb_url || 'mongodb://127.0.0.1:27017/hive'
+const mongodb_url = process.env.MONGODB_URL || 'mongodb://127.0.0.1:27017/hive'
 
 mongoose.connect(mongodb_url, {
   useNewUrlParser: true
